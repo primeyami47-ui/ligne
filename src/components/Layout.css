@@ -20,7 +20,7 @@
 .hdr--open { background: #fff; box-shadow: none; }
 
 .hdr__in { display: flex; align-items: center; gap: 2rem; min-height: 5rem; }
-.hdr__brand { display: flex; text-decoration: none; margin-right: auto; }
+.hdr__brand { display: flex; text-decoration: none; margin-inline-end: auto; }
 
 .hdr__nav { display: flex; align-items: center; gap: 2rem; }
 .hdr__link {
@@ -81,11 +81,13 @@ html.menu-open { overflow: hidden; }
 /* --------------------------------------------------------------- skip --- */
 
 .skip {
-  position: absolute; left: -9999px; top: 0; z-index: 100;
+  /* Caché au-dessus de l'écran plutôt qu'à gauche : en arabe, un élément
+     hors champ à gauche élargirait la page. */
+  position: absolute; inset-inline-start: 1rem; top: 0; z-index: 100; transform: translateY(-120%);
   background: var(--ink); color: #fff; padding: .85rem 1.4rem;
   font-size: .875rem; text-decoration: none;
 }
-.skip:focus { left: 0; }
+.skip:focus { transform: none; }
 
 /* ------------------------------------------------------------- footer --- */
 
@@ -130,3 +132,18 @@ html.menu-open { overflow: hidden; }
 
 /* Mention de vitrine : marque inventée, site de démonstration. */
 .ftr__demo { opacity: .8; }
+
+/* -------------------------------------------------------------- langues */
+
+.langs { display: flex; gap: 0; border: 1.5px solid var(--ink); }
+.langs__a {
+  min-width: 2.3rem; height: 2.3rem; padding-inline: .4rem; display: grid; place-items: center;
+  font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: var(--ink); text-decoration: none;
+}
+.langs__a + .langs__a { border-inline-start: 1.5px solid var(--ink); }
+.langs__a[lang="ar"] { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: .95rem; }
+.langs__a:hover { background: var(--soft); }
+.langs__a[aria-current] { background: var(--ink); color: #fff; }
+.menu__langs { margin-top: 1.6rem; align-self: flex-start; }
+.menu__langs .langs__a { min-width: 3rem; height: 3rem; font-size: .95rem; }
+@media (max-width: 960px) { .hdr__langs { display: none; } }

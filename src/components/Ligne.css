@@ -25,7 +25,7 @@
 .sidx__go { justify-self: end; align-self: center; width: 2.6rem; height: 2.6rem; display: grid; place-items: center; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--line); transition: background-color .3s, color .3s, box-shadow .3s; }
 @media (hover: hover) {
   .sidx__list:hover .sidx__in { color: #B4B4BA; }
-  .sidx__list:hover .sidx__row.is-on .sidx__in { color: var(--ink); padding-left: 1rem; }
+  .sidx__list:hover .sidx__row.is-on .sidx__in { color: var(--ink); padding-inline-start: 1rem; }
   .sidx__row.is-on .sidx__go { background: var(--thread); color: #fff; box-shadow: none; }
 }
 .sidx__in:focus-visible .sidx__go { background: var(--thread); color: #fff; }
@@ -35,43 +35,16 @@
   position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none;
   width: 17rem; aspect-ratio: 4 / 5; margin: -8.5rem 0 0 2rem;
 }
-/* Un échantillon de tissu par pièce, tissé en CSS : rayure tennis,
-   prince-de-galles, popeline, chevron, laine chinée. */
-.swatch {
-  position: absolute; inset: 0;
+.sidx__float img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.1);
   clip-path: inset(100% 0 0 0); transition: clip-path .55s var(--ease);
-  box-shadow: 0 24px 50px rgba(0, 0, 0, .25);
 }
-.swatch.is-on { clip-path: inset(0 0 0 0); }
-.swatch--costume {
-  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, .55) 22px 23px), #1E2433;
-}
-.swatch--chemise {
-  background: repeating-linear-gradient(90deg, #D9E6F2 0 6px, #fff 6px 12px);
-}
-.swatch--mariage {
-  background:
-    repeating-linear-gradient(90deg, transparent 0 34px, rgba(200, 40, 40, .55) 34px 36px),
-    repeating-linear-gradient(0deg, transparent 0 34px, rgba(200, 40, 40, .55) 34px 36px),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, .18) 0 4px, transparent 4px 8px),
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, .18) 0 4px, transparent 4px 8px),
-    #8E8A86;
-}
-.swatch--manteau {
-  background:
-    repeating-linear-gradient(45deg, #4A3F35 0 5px, #6B5B4B 5px 10px) left / 50% 100% no-repeat,
-    repeating-linear-gradient(-45deg, #4A3F35 0 5px, #6B5B4B 5px 10px) right / 50% 100% no-repeat;
-}
-.swatch--retouche {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .12) 1px, transparent 2px) 0 0 / 7px 7px,
-    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, .25) 1px, transparent 2px) 0 0 / 9px 9px,
-    #6E6A63;
-}
+.sidx__float img.is-on { clip-path: inset(0 0 0 0); }
 @media (hover: none), (pointer: coarse) { .sidx__float { display: none; } }
 
 @media (max-width: 760px) {
-  .sidx__in { grid-template-columns: 2.2rem minmax(0, 1fr); gap: .35rem .8rem; padding-right: 1.4rem; }
+  .sidx__in { grid-template-columns: 2.2rem minmax(0, 1fr); gap: .35rem .8rem; padding-inline-end: 1.4rem; }
   .sidx__title { grid-column: 2; font-size: clamp(1.6rem, 7.4vw, 2.2rem); }
   .sidx__short { grid-column: 2; font-size: .9375rem; }
   .sidx__go { display: none; }
@@ -92,7 +65,7 @@
 /* Le fil atteint l'étape : le numéro se remplit de rouge. */
 .step__dot.is-reached { background: var(--thread); color: #fff; box-shadow: none; transform: scale(1.08); }
 .step__body { grid-column: 3; display: grid; gap: .7rem; max-width: 30rem; }
-.step:nth-child(even) .step__body { grid-column: 1; grid-row: 1; justify-self: end; text-align: right; }
+.step:nth-child(even) .step__body { grid-column: 1; grid-row: 1; justify-self: end; text-align: end; }
 .step__label { font-size: .8125rem; font-weight: 500; color: var(--thread); }
 .step .t-h3 { font-size: clamp(1.6rem, 2.8vw, 2.3rem); letter-spacing: -.045em; }
 .step__text { font-size: 1rem; }
@@ -104,8 +77,8 @@
 @media (max-width: 760px) {
   .step, .step:nth-child(even) { grid-template-columns: 3.2rem minmax(0, 1fr); gap: 1.1rem; }
   .step__dot { grid-column: 1; width: 3.2rem; height: 3.2rem; font-size: .9rem; }
-  .step__body, .step:nth-child(even) .step__body { grid-column: 2; grid-row: auto; justify-self: start; text-align: left; }
+  .step__body, .step:nth-child(even) .step__body { grid-column: 2; grid-row: auto; justify-self: start; text-align: start; }
   .step:nth-child(even) .draft--inline { justify-content: flex-start; }
 }
 
-@media (prefers-reduced-motion: reduce) { .step__dot, .sidx__in, .swatch { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .step__dot, .sidx__in, .sidx__float img { transition: none; } }

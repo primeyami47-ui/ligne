@@ -4,6 +4,12 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 // donnée de visite transmise à un tiers). Une seule famille, Schibsted
 // Grotesk, de la graisse 400 à 900.
 import '@fontsource-variable/schibsted-grotesk'
+// Arabe : IBM Plex Sans Arabic, un grotesque sobre qui accompagne bien le
+// Schibsted Grotesk latin.
+import '@fontsource/ibm-plex-sans-arabic/400.css'
+import '@fontsource/ibm-plex-sans-arabic/500.css'
+import '@fontsource/ibm-plex-sans-arabic/600.css'
+import '@fontsource/ibm-plex-sans-arabic/700.css'
 import 'lenis/dist/lenis.css'
 import './styles/tokens.css'
 import App from './App'

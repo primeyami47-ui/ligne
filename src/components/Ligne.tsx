@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { phases, pieces } from '../data/site'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useContent } from '../content'
+import { LOCALES, useLang } from '../i18n'
 import { Arrow } from './Reveal'
 import './Ligne.css'
 
@@ -58,11 +59,15 @@ export function Thread({ children }: { children: ReactNode }) {
     const build = () => {
       const r0 = el.getBoundingClientRect()
       const phone = window.innerWidth < 760
+      // De droite à gauche, la mise en page se retourne : le fil passe côté
+      // opposé, et la coche finale s'incline dans l'autre sens.
+      const rtl = document.documentElement.dir === 'rtl'
+      const dir = rtl ? -1 : 1
       const knots = [...el.querySelectorAll<HTMLElement>('[data-knot]')]
       const pts: Pt[] = knots.map((k) => {
         const r = k.getBoundingClientRect()
         const [fx, fy] = ((phone && k.dataset.knotM) || k.dataset.knot || '0.5,0.5').split(',').map(Number)
-        return [r.left - r0.left + r.width * fx, r.top - r0.top + r.height * fy]
+        return [r.left - r0.left + r.width * (rtl ? 1 - fx : fx), r.top - r0.top + r.height * fy]
       })
       if (pts.length < 2) return
       const first = knots[0].getBoundingClientRect()
@@ -71,8 +76,8 @@ export function Thread({ children }: { children: ReactNode }) {
       // Fin : la coche. Le dernier nœud est le creux de la coche.
       const [ex, ey] = pts[pts.length - 1]
       const c = phone ? 34 : 56
-      const body = [...knot, ...pts.slice(1, -1), [ex - c * 0.75, ey - c * 0.2] as Pt]
-      const d = `${smooth(body)} L${ex} ${ey + c * 0.3} L${ex + c * 1.25} ${ey - c * 0.95}`
+      const body = [...knot, ...pts.slice(1, -1), [ex - dir * c * 0.75, ey - c * 0.2] as Pt]
+      const d = `${smooth(body)} L${ex} ${ey + c * 0.3} L${ex + dir * c * 1.25} ${ey - c * 0.95}`
       // tb : bas de la pelote, pour savoir où s'arrête le dessin automatique.
       setBox((b) => (b.d === d && b.w === r0.width && b.h === r0.height ? b : { w: r0.width, h: r0.height, d, tb: pts[0][1] + s * 1.2 }))
     }
@@ -164,7 +169,13 @@ export function Thread({ children }: { children: ReactNode }) {
    numérotées. Sur ordinateur, un échantillon du tissu de la pièce survolée
    suit le curseur. */
 
+const PHOTO_SIZE: Record<string, [number, number]> = {
+  costume: [640, 960], chemise: [640, 427], mariage: [640, 424], manteau: [640, 960], retouche: [640, 427],
+}
+
 export function ServiceIndex() {
+  const t = useContent().pieces
+  const pieces = t.list
   const [on, setOn] = useState(-1)
   const float = useRef<HTMLDivElement>(null)
 
@@ -199,7 +210,8 @@ export function ServiceIndex() {
       </ol>
       <div className="sidx__float" ref={float} aria-hidden="true">
         {pieces.map((e, i) => (
-          <span key={e.id} className={`swatch swatch--${e.id}${on === i ? ' is-on' : ''}`} />
+          <img key={e.id} src={`${import.meta.env.BASE_URL}img/${e.id}.webp`} alt="" width={PHOTO_SIZE[e.id][0]} height={PHOTO_SIZE[e.id][1]}
+               className={on === i ? "is-on" : ""} />
         ))}
       </div>
     </div>
@@ -211,20 +223,143 @@ export function ServiceIndex() {
    remplit de rouge quand le fil l'atteint. */
 
 export function Steps() {
+  const t = useContent().steps
   return (
     <ol className="steps">
-      {phases.map((ph) => (
+      {t.phases.map((ph) => (
         <li key={ph.n} className="step">
           <span className="step__dot t-num" data-knot="0.5,0.5" data-knot-m="0.5,0.5">{ph.n}</span>
           <div className="step__body">
             <p className="step__label">{ph.label}</p>
             <h3 className="t-h3">{ph.title}</h3>
             <p className="step__text">{ph.body}</p>
-            <p className="step__deliv"><span>Vous repartez avec —</span> {ph.deliverable}</p>
+            <p className="step__deliv"><span>{t.receive}</span> {ph.deliverable}</p>
             <span className="step__weeks">{ph.duration}</span>
           </div>
         </li>
       ))}
     </ol>
+  )
+}
+
+/* ================================================================ tissus ===
+   Six tissus à toucher. On en choisit un : l'échantillon (tissé en CSS) et
+   sa fiche (composition, poids, usages) changent. */
+
+export function FabricPicker() {
+  const t = useContent().fabrics
+  const [i, setI] = useState(0)
+  const f = t.list[i]
+  return (
+    <div className="fab">
+      <div className="fab__tabs" role="radiogroup" aria-label={t.eyebrow}>
+        {t.list.map((x, k) => (
+          <button key={x.id} type="button" role="radio" aria-checked={k === i} className={`fab__tab${k === i ? ' is-on' : ''}`} onClick={() => setI(k)}>
+            <span className={`fab__chip fab--${x.id}`} aria-hidden="true" />{x.name}
+          </button>
+        ))}
+      </div>
+      <div className="fab__card" key={f.id}>
+        <div className={`fab__swatch fab--${f.id}`} aria-hidden="true" />
+        <div className="fab__sheet">
+          <h3 className="fab__name">{f.name}</h3>
+          <dl className="fab__rows">
+            <div><dt>{t.compLabel}</dt><dd>{f.comp}</dd></div>
+            <div><dt>{t.weightLabel}</dt><dd>{f.weight}</dd></div>
+            <div><dt>{t.forLabel}</dt><dd>{f.use}</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ================================================================ chiffres ===
+   Un mètre de couturière : les quatre chiffres sont des repères sur le ruban,
+   chacun avec son épingle rouge. */
+
+function Count({ to, locale }: { to: number; locale: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [n, setN] = useState(to)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !('IntersectionObserver' in window)) return
+    if (reduced() || el.getBoundingClientRect().top < window.innerHeight) return
+    setN(0)
+    let raf = 0
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return
+      io.disconnect()
+      const t0 = performance.now()
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / 1100)
+        setN(Math.round(to * (1 - Math.pow(1 - p, 3))))
+        if (p < 1) raf = requestAnimationFrame(tick)
+      }
+      raf = requestAnimationFrame(tick)
+    }, { threshold: 0.6 })
+    io.observe(el)
+    return () => { io.disconnect(); cancelAnimationFrame(raf) }
+  }, [to])
+  return <span ref={ref}>{n.toLocaleString(locale)}</span>
+}
+
+export function Tape() {
+  const t = useContent().tape
+  const locale = LOCALES[useLang()]
+  return (
+    <div className="tape">
+      <p className="tape__eyebrow">{t.eyebrow}</p>
+      <div className="tape__ribbon" aria-hidden="true" />
+      <ul className="tape__marks">
+        {t.figures.map((f, i) => (
+          <li key={f.label} className="tape__mark" style={{ '--i': i } as CSSProperties}>
+            <span className="tape__pin" aria-hidden="true" />
+            <span className="tape__value t-num" dir="ltr"><Count to={f.value} locale={locale} />{f.unit}</span>
+            <span className="tape__label">{f.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/* ============================================================== rendez-vous ===
+   Un essayage se compose : une pièce, un jour, une heure. Le bouton ouvre un
+   courriel déjà rédigé. */
+
+export function Fitting() {
+  const t = useContent()
+  const f = t.fitting
+  const [piece, setPiece] = useState<number | null>(null)
+  const [day, setDay] = useState<number | null>(null)
+  const [time, setTime] = useState<number | null>(null)
+  const ready = piece !== null && day !== null && time !== null
+  const vars = (str: string) => str
+    .replace('{piece}', piece === null ? '' : t.pieces.list[piece].title)
+    .replace('{day}', day === null ? '' : f.days[day])
+    .replace('{time}', time === null ? '' : f.times[time])
+  const href = ready
+    ? `mailto:${t.company.email}?subject=${encodeURIComponent(vars(f.mailSubject))}&body=${encodeURIComponent(vars(f.mailBody))}`
+    : undefined
+  const group = (label: string, items: string[], cur: number | null, set: (n: number) => void) => (
+    <fieldset className="fit__group">
+      <legend>{label}</legend>
+      <div className="fit__opts">
+        {items.map((x, k) => (
+          <button key={x} type="button" aria-pressed={cur === k} className={`chip${cur === k ? ' is-on' : ''}`} onClick={() => set(k)}>{x}</button>
+        ))}
+      </div>
+    </fieldset>
+  )
+  return (
+    <div className="fit">
+      {group(f.pieceLabel, t.pieces.list.map((p) => p.title), piece, setPiece)}
+      {group(f.dayLabel, f.days, day, setDay)}
+      {group(f.timeLabel, f.times, time, setTime)}
+      <p className="fit__sum" aria-live="polite">{ready ? vars(f.summary) : f.pick}</p>
+      <a className={`btn btn--primary fit__go${ready ? '' : ' is-off'}`} href={href} aria-disabled={!ready}
+         onClick={(e) => { if (!ready) e.preventDefault() }}>{f.cta} <Arrow /></a>
+    </div>
   )
 }

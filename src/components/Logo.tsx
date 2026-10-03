@@ -25,14 +25,14 @@ export function LogoMark({ tone = 'color', size = 40, className = '', draw = fal
 }
 
 /** Trait + nom : « ibra » en noir, « tailleur » en gris, sur une ligne. */
-export default function Logo({ tone = 'color', size = 44, className = '', draw = false }: {
-  tone?: LogoTone; size?: number; className?: string; draw?: boolean
+export default function Logo({ tone = 'color', size = 44, className = '', draw = false, word = 'ibra', sub }: {
+  tone?: LogoTone; size?: number; className?: string; draw?: boolean; word?: string; sub: string
 }) {
   const text = tone === 'reverse' || tone === 'white' ? '#fff' : 'var(--ink)'
   return (
     <span className={`ilogo ${className}`} style={{ color: text }}>
       <LogoMark tone={tone} size={size} draw={draw} />
-      <span className="ilogo__word" aria-hidden="true">ibra <small>tailleur</small></span>
+      <span className="ilogo__word" aria-hidden="true">{word} <small>{sub}</small></span>
     </span>
   )
 }

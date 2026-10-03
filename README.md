@@ -3,7 +3,7 @@
 **Site vitrine de démonstration.** Ibra est une marque fictive : l’atelier,
 les noms, les chiffres et les avis sont inventés pour montrer le design.
 
-**En ligne :** https://primeyami47-ui.github.io/ligne/
+**En ligne :** https://primeyami47-ui.github.io/ligne/ — [English](https://primeyami47-ui.github.io/ligne/en/) · [العربية](https://primeyami47-ui.github.io/ligne/ar/)
 
 ## Le design
 
@@ -25,6 +25,25 @@ fins à la place des cartes, beaucoup de blanc.
 - Des chiffres qui comptent, des avis présentés comme un registre, un menu
   mobile tout en typographie.
 - Tout s’arrête proprement avec « réduire les animations ».
+
+## Ce qui la distingue
+
+- **Un choix de tissus** : six échantillons tissés en CSS, avec leur fiche
+  (composition, poids, usages).
+- **Un mètre de couturière** pour les chiffres, chacun avec son épingle rouge.
+- **Un rendez-vous qui se compose** : pièce, jour, heure, puis un courriel
+  déjà rédigé dans la langue de la page.
+- Des photos réelles qui suivent le curseur dans l’index de l’atelier.
+- Le fil rouge est **retourné** en arabe : il passe du côté opposé et la
+  coche finale s’incline dans l’autre sens.
+
+Photos (Unsplash, licence Unsplash) : Logan Weaver (costume), Nimble Made
+(chemises), Mélanie Villeneuve (mariage), Taras Chernus (manteau), Elio
+Santos (retouches).
+
+## Trois langues
+
+Français à la racine, anglais sous `/en/`, arabe (de droite à gauche) sous `/ar/`, chaque version prérendue. Les textes vivent dans `src/content/{fr,en,ar}.ts`. Le sélecteur de langue est un vrai lien : chaque langue arrive avec sa police et son sens de lecture, sans scintillement. En arabe, le nom de la marque est écrit en arabe.
 
 ## Technique
 

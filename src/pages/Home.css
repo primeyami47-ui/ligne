@@ -83,7 +83,7 @@
 .ldiag .t-lead { color: rgba(255, 255, 255, .75); max-width: 30rem; }
 .ldiag__card { border-top: 1.5px solid #fff; padding-top: 1.4rem; }
 .ldiag__step { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 600; letter-spacing: -.04em; line-height: 1.1; color: #fff; margin-bottom: 1.5rem; }
-.ldiag__step .t-num { display: inline-block; font-size: .875rem; font-weight: 500; letter-spacing: 0; color: var(--thread); vertical-align: .5em; margin-right: .4rem; }
+.ldiag__step .t-num { display: inline-block; font-size: .875rem; font-weight: 500; letter-spacing: 0; color: var(--thread); vertical-align: .5em; margin-inline-end: .4rem; }
 .ldiag__chips { display: flex; flex-wrap: wrap; gap: .6rem; }
 .ldiag .chip { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .3); }
 .ldiag .chip:hover { box-shadow: inset 0 0 0 1.5px #fff; }
@@ -111,7 +111,7 @@
 
 .lclose { padding-top: 0; }
 /* Le point d'arrivée du fil : un emplacement réservé à droite du titre. */
-.lclose__check { display: inline-block; width: 1.4em; height: .7em; vertical-align: .1em; margin-left: .15em; }
+.lclose__check { display: inline-block; width: 1.4em; height: .7em; vertical-align: .1em; margin-inline-start: .15em; }
 
 @media (prefers-reduced-motion: reduce) { .lhero__h .ln > span, .lhero__code { animation: none; } }
 
@@ -122,12 +122,78 @@
 .lproof__head { max-width: none; }
 /* Largeur utile du conteneur .wrap, pour viser son bord depuis un bloc centré. */
 .lmethod__head { --inner: calc(min(100vw, var(--w)) - 2 * var(--gut)); }
-.lknot--edge { right: calc((100% - var(--inner)) / 2); bottom: 0; }
+.lknot--edge { inset-inline-end: calc((100% - var(--inner)) / 2); bottom: 0; }
 .lknot--below { left: 50%; bottom: calc(-1 * clamp(1.5rem, 3.5vw, 2.75rem)); }
-.lknot--right { right: 0; top: -2rem; }
+.lknot--right { inset-inline-end: 0; top: -2rem; }
 .ldiag__text { position: relative; }
-.lknot--bl { left: calc(-.6 * var(--gut)); bottom: calc(-.5 * var(--sec)); }
+.lknot--bl { inset-inline-start: calc(-.6 * var(--gut)); bottom: calc(-.5 * var(--sec)); }
 .lmethod__more { position: relative; }
 .lknot--mid { left: 50%; top: -1.8rem; }
-.lknot--margin { left: calc(-.6 * var(--gut)); top: -1.4rem; }
+.lknot--margin { inset-inline-start: calc(-.6 * var(--gut)); top: -1.4rem; }
 @media (max-width: 760px) { .lknot--mid { left: 1.6rem; } }
+
+/* ============================================================ les tissus == */
+
+.lfab { padding-top: clamp(2rem, 5vw, 4rem); }
+.fab { display: grid; gap: 2rem; }
+.fab__tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
+.fab__tab {
+  display: inline-flex; align-items: center; gap: .6rem; padding: .55rem 1.1rem .55rem .55rem; cursor: pointer;
+  font: 500 .9375rem var(--font); color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 999px;
+  transition: border-color .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease);
+}
+.fab__tab:hover { border-color: var(--ink); }
+.fab__tab.is-on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.fab__chip { width: 1.7rem; height: 1.7rem; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
+.fab__card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: stretch; animation: fab-in .5s var(--ease) both; }
+@keyframes fab-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.fab__swatch { aspect-ratio: 16 / 10; box-shadow: 0 30px 60px rgba(0, 0, 0, .14), inset 0 0 0 1px rgba(0, 0, 0, .08); }
+.fab__sheet { display: grid; align-content: center; gap: 1.2rem; }
+.fab__name { margin: 0; font-size: clamp(2.2rem, 4.4vw, 3.8rem); font-weight: 600; letter-spacing: -.05em; line-height: 1; }
+.fab__rows { margin: 0; display: grid; border-top: 1.5px solid var(--ink); }
+.fab__rows div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1rem; padding-block: .85rem; border-bottom: 1px solid var(--line); }
+.fab__rows dt { font-size: .8125rem; font-weight: 500; color: var(--muted); }
+.fab__rows dd { margin: 0; font-weight: 500; line-height: 1.4; }
+@media (max-width: 860px) { .fab__card { grid-template-columns: minmax(0, 1fr); } .fab__rows div { grid-template-columns: 6.5rem minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .fab__card { animation: none; } }
+
+/* Les échantillons : chaque tissu est tissé en dégradés CSS. */
+.fab--laine { background: repeating-linear-gradient(90deg, transparent 0 20px, rgba(255, 255, 255, .5) 20px 21px), radial-gradient(rgba(255, 255, 255, .06) 1px, transparent 1.4px) 0 0 / 5px 5px, #1E2433; }
+.fab--lin { background: repeating-linear-gradient(0deg, rgba(120, 100, 70, .13) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(120, 100, 70, .13) 0 1px, transparent 1px 3px), #D9CDB4; }
+.fab--flanelle { background: radial-gradient(rgba(255, 255, 255, .12) 1px, transparent 1.6px) 0 0 / 4px 4px, radial-gradient(rgba(0, 0, 0, .14) 1px, transparent 1.6px) 2px 2px / 5px 5px, #6F7378; }
+.fab--tweed { background: repeating-linear-gradient(45deg, #4A3F35 0 5px, #7C6A55 5px 10px) left / 50% 100% no-repeat, repeating-linear-gradient(-45deg, #4A3F35 0 5px, #7C6A55 5px 10px) right / 50% 100% no-repeat; }
+.fab--cachemire { background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, .25), transparent 60%), radial-gradient(rgba(0, 0, 0, .08) 1px, transparent 1.6px) 0 0 / 3px 3px, #C49A6C; }
+.fab--popeline { background: repeating-linear-gradient(90deg, #DCE8F4 0 7px, #fff 7px 14px); }
+
+/* ================================================== le mètre de couturière == */
+
+.tape { display: grid; gap: .8rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.tape__eyebrow { margin: 0; font-size: .8125rem; font-weight: 500; color: var(--muted); }
+.tape__ribbon {
+  height: 2.6rem; border-block: 1.5px solid var(--ink); position: relative; background: #fff;
+  background-image:
+    linear-gradient(90deg, var(--ink) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink) 1px, transparent 1px);
+  background-size: 100px 100%, 20px 52%, 10px 28%;
+  background-repeat: repeat-x; background-position: 0 100%, 0 100%, 0 100%;
+}
+.tape__marks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4rem; margin-top: -.8rem; }
+.tape__mark { position: relative; display: grid; gap: .3rem; padding-top: 1.7rem; }
+.tape__pin { position: absolute; top: -.6rem; inset-inline-start: 0; width: 2px; height: 3.3rem; background: var(--thread); }
+.tape__pin::before { content: ""; position: absolute; top: 0; left: 50%; width: .9rem; height: .9rem; margin-left: -.45rem; border-radius: 50%; background: var(--thread); }
+.tape__value { font-size: clamp(3.4rem, 7vw, 6rem); font-weight: 600; letter-spacing: -.07em; line-height: .95; color: var(--ink); }
+.tape__label { font-size: .9375rem; color: var(--muted); max-width: 18ch; line-height: 1.35; }
+@media (max-width: 760px) { .tape__marks { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; } }
+
+/* ============================================================ le rendez-vous == */
+/* On compose un essayage : une pièce, un jour, une heure. */
+
+.fit { display: grid; gap: 1.4rem; }
+.fit__group { border: 0; margin: 0; padding: 0; display: grid; gap: .6rem; min-width: 0; }
+.fit__group legend { padding: 0; margin-bottom: .55rem; font-size: .875rem; font-weight: 500; color: rgba(255, 255, 255, .7); }
+.fit__opts { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ldiag .chip.is-on { background: #fff; color: var(--ink); box-shadow: none; }
+.fit__sum { margin: 0; min-height: 1.5rem; font-size: 1.125rem; font-weight: 600; letter-spacing: -.02em; color: #fff; }
+.fit__go { justify-self: start; }
+.fit__go.is-off { opacity: .4; cursor: not-allowed; pointer-events: none; }
