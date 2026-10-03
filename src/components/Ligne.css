@@ -1,0 +1,111 @@
+/* ================================================================ le fil = */
+
+.thread-host { position: relative; }
+.thread { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; overflow: visible; }
+.thread__path { fill: none; stroke: var(--thread); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.thread__pen { fill: var(--thread); filter: drop-shadow(0 0 6px rgba(225, 38, 45, .55)); transition: r .3s var(--ease); }
+.thread-host.is-done .thread__pen { r: 0; }
+@media (max-width: 760px) { .thread__path { stroke-width: 2.4; } .thread__pen { r: 5; } }
+
+/* ================================================================ index == */
+
+.sidx { position: relative; }
+.sidx__list { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.sidx__row { border-bottom: 1px solid var(--line); }
+.sidx__in {
+  display: grid; grid-template-columns: 4.5rem minmax(0, 1.4fr) minmax(0, 1fr) 3rem;
+  gap: 1.5rem; align-items: baseline;
+  padding-block: clamp(1.4rem, 2.6vw, 2.2rem);
+  text-decoration: none; color: var(--ink);
+  transition: color .3s var(--ease), padding .5s var(--ease);
+}
+.sidx__n { font-size: .875rem; color: var(--muted); }
+.sidx__title { font-size: clamp(1.7rem, 3.4vw, 3rem); font-weight: 600; letter-spacing: -.05em; line-height: 1; }
+.sidx__short { font-size: 1rem; color: var(--body); max-width: 30ch; }
+.sidx__go { justify-self: end; align-self: center; width: 2.6rem; height: 2.6rem; display: grid; place-items: center; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--line); transition: background-color .3s, color .3s, box-shadow .3s; }
+@media (hover: hover) {
+  .sidx__list:hover .sidx__in { color: #B4B4BA; }
+  .sidx__list:hover .sidx__row.is-on .sidx__in { color: var(--ink); padding-left: 1rem; }
+  .sidx__row.is-on .sidx__go { background: var(--thread); color: #fff; box-shadow: none; }
+}
+.sidx__in:focus-visible .sidx__go { background: var(--thread); color: #fff; }
+
+/* La photo qui suit le curseur (ordinateur seulement). */
+.sidx__float {
+  position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none;
+  width: 17rem; aspect-ratio: 4 / 5; margin: -8.5rem 0 0 2rem;
+}
+/* Un échantillon de tissu par pièce, tissé en CSS : rayure tennis,
+   prince-de-galles, popeline, chevron, laine chinée. */
+.swatch {
+  position: absolute; inset: 0;
+  clip-path: inset(100% 0 0 0); transition: clip-path .55s var(--ease);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, .25);
+}
+.swatch.is-on { clip-path: inset(0 0 0 0); }
+.swatch--costume {
+  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, .55) 22px 23px), #1E2433;
+}
+.swatch--chemise {
+  background: repeating-linear-gradient(90deg, #D9E6F2 0 6px, #fff 6px 12px);
+}
+.swatch--mariage {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(200, 40, 40, .55) 34px 36px),
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(200, 40, 40, .55) 34px 36px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .18) 0 4px, transparent 4px 8px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, .18) 0 4px, transparent 4px 8px),
+    #8E8A86;
+}
+.swatch--manteau {
+  background:
+    repeating-linear-gradient(45deg, #4A3F35 0 5px, #6B5B4B 5px 10px) left / 50% 100% no-repeat,
+    repeating-linear-gradient(-45deg, #4A3F35 0 5px, #6B5B4B 5px 10px) right / 50% 100% no-repeat;
+}
+.swatch--retouche {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .12) 1px, transparent 2px) 0 0 / 7px 7px,
+    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, .25) 1px, transparent 2px) 0 0 / 9px 9px,
+    #6E6A63;
+}
+@media (hover: none), (pointer: coarse) { .sidx__float { display: none; } }
+
+@media (max-width: 760px) {
+  .sidx__in { grid-template-columns: 2.2rem minmax(0, 1fr); gap: .35rem .8rem; padding-right: 1.4rem; }
+  .sidx__title { grid-column: 2; font-size: clamp(1.6rem, 7.4vw, 2.2rem); }
+  .sidx__short { grid-column: 2; font-size: .9375rem; }
+  .sidx__go { display: none; }
+}
+
+/* ================================================================ étapes = */
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(3.5rem, 8vw, 6rem); }
+.step { display: grid; grid-template-columns: minmax(0, 1fr) 4.5rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+.step__dot {
+  grid-column: 2; width: 4.5rem; height: 4.5rem; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 1.05rem; font-weight: 600; color: var(--ink); background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  position: relative; z-index: 4;
+  transition: background-color .5s var(--ease), color .5s var(--ease), box-shadow .5s var(--ease), transform .6s var(--spring);
+}
+/* Le fil atteint l'étape : le numéro se remplit de rouge. */
+.step__dot.is-reached { background: var(--thread); color: #fff; box-shadow: none; transform: scale(1.08); }
+.step__body { grid-column: 3; display: grid; gap: .7rem; max-width: 30rem; }
+.step:nth-child(even) .step__body { grid-column: 1; grid-row: 1; justify-self: end; text-align: right; }
+.step__label { font-size: .8125rem; font-weight: 500; color: var(--thread); }
+.step .t-h3 { font-size: clamp(1.6rem, 2.8vw, 2.3rem); letter-spacing: -.045em; }
+.step__text { font-size: 1rem; }
+.step__deliv { font-weight: 500; color: var(--ink); }
+.step__deliv span { color: var(--muted); font-weight: 400; }
+.step__weeks { font-size: .875rem; color: var(--muted); }
+.step:nth-child(even) .draft--inline { justify-content: flex-end; }
+
+@media (max-width: 760px) {
+  .step, .step:nth-child(even) { grid-template-columns: 3.2rem minmax(0, 1fr); gap: 1.1rem; }
+  .step__dot { grid-column: 1; width: 3.2rem; height: 3.2rem; font-size: .9rem; }
+  .step__body, .step:nth-child(even) .step__body { grid-column: 2; grid-row: auto; justify-self: start; text-align: left; }
+  .step:nth-child(even) .draft--inline { justify-content: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) { .step__dot, .sidx__in, .swatch { transition: none; } }

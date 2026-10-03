@@ -1,0 +1,133 @@
+/* =============================================================== hero === */
+
+.lhero { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(4rem, 9vw, 7rem); }
+.lhero__in {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas: "proof proof" "h knot" "side knot";
+  column-gap: clamp(2rem, 5vw, 5rem); align-items: start;
+}
+.lhero__proof {
+  grid-area: proof; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  padding-bottom: 1rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); border-bottom: 1.5px solid var(--ink);
+  font-size: .875rem; font-weight: 500; color: var(--ink);
+}
+.lhero__h {
+  grid-area: h; font-weight: 600;
+  font-size: clamp(3.6rem, 10vw, 10.5rem); line-height: .86; letter-spacing: -.07em;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.lhero__h .ln { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.lhero__h .ln > span { display: inline-block; animation: l-up 1.1s var(--ease) both; }
+.lhero__h .ln:nth-child(2) > span { animation-delay: .12s; }
+@keyframes l-up { from { transform: translateY(105%); } to { transform: none; } }
+
+/* La pelote : une zone carrée où le fil fait ses boucles, entourée des
+   tissus en vrac, qui s'écartent à mesure que le fil se démêle. */
+.lhero__knot { grid-area: knot; position: relative; width: 100%; aspect-ratio: 1; align-self: center; }
+.lhero__code {
+  position: absolute; font-size: .8125rem; font-weight: 500; color: var(--muted); white-space: nowrap;
+  animation: code-in .9s var(--ease) both; animation-delay: calc(.8s + var(--i) * .08s);
+}
+@keyframes code-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.lhero__code:nth-child(1) { left: 4%;  top: 10%; }
+.lhero__code:nth-child(2) { right: 2%; top: 6%; }
+.lhero__code:nth-child(3) { left: 0;   top: 48%; }
+.lhero__code:nth-child(4) { right: 0;  top: 42%; }
+.lhero__code:nth-child(5) { left: 10%; bottom: 8%; }
+.lhero__code:nth-child(6) { right: 8%; bottom: 4%; }
+.lhero__code:nth-child(7) { left: 40%; top: 0; }
+.lhero__code:nth-child(8) { left: 44%; bottom: 0; }
+
+.lhero__side { grid-area: side; }
+.lhero__lead { font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.55; max-width: 34rem; margin-bottom: 2.2rem; color: var(--body); }
+.lhero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; }
+.lhero__note { margin-top: 1.2rem; font-size: .875rem; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .lhero__in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "proof" "h" "knot" "side"; }
+  .lhero__h { font-size: clamp(3.4rem, 17vw, 6rem); margin-bottom: 0; }
+  .lhero__knot { width: min(100%, 22rem); justify-self: center; margin-block: .5rem 1.5rem; }
+  .lhero__cta .btn { flex: 1 1 auto; }
+}
+
+/* ============================================================ confiance == */
+
+.llogos { border-block: 1px solid var(--line); }
+.llogos__in { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 2rem; align-items: center; padding-block: 2rem; }
+.llogos__h { font-size: .875rem; font-weight: 500; color: var(--ink); }
+.llogos__row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 1.4rem 2.4rem; }
+.llogos__row img { height: var(--lh); width: auto; filter: grayscale(1) contrast(1.2); opacity: .75; mix-blend-mode: multiply; transition: opacity .3s; }
+.llogos__row img:hover { opacity: 1; }
+.llogos__row--names li { font-size: 1.05rem; font-weight: 600; letter-spacing: -.02em; color: var(--muted); }
+@media (max-width: 760px) {
+  .llogos__in { grid-template-columns: minmax(0, 1fr); gap: 1.2rem; }
+  .llogos__row { gap: 1.1rem 1.6rem; }
+  .llogos__row img { height: calc(var(--lh) * .8); }
+}
+
+/* =============================================================== atelier = */
+
+.lsvc__diag { margin-top: 2.5rem; font-size: 1.05rem; font-weight: 500; color: var(--ink); }
+
+/* ============================================================== démarche = */
+
+.lmethod__more { margin-top: clamp(3rem, 6vw, 4.5rem); text-align: center; }
+
+/* =========================================================== rendez-vous = */
+
+.ldiag { background: var(--ink); color: #fff; padding-block: var(--sec); }
+.ldiag__in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: end; }
+.ldiag__eb { color: #fff; margin-bottom: 1.5rem; }
+.ldiag__eb::before { background: var(--thread); }
+.ldiag__h { color: #fff; font-size: clamp(3.4rem, 9vw, 8rem); line-height: .88; letter-spacing: -.07em; margin-bottom: 2rem; }
+.ldiag .t-lead { color: rgba(255, 255, 255, .75); max-width: 30rem; }
+.ldiag__card { border-top: 1.5px solid #fff; padding-top: 1.4rem; }
+.ldiag__step { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 600; letter-spacing: -.04em; line-height: 1.1; color: #fff; margin-bottom: 1.5rem; }
+.ldiag__step .t-num { display: inline-block; font-size: .875rem; font-weight: 500; letter-spacing: 0; color: var(--thread); vertical-align: .5em; margin-right: .4rem; }
+.ldiag__chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+.ldiag .chip { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .3); }
+.ldiag .chip:hover { box-shadow: inset 0 0 0 1.5px #fff; }
+.ldiag :focus-visible { outline-color: #fff; }
+@media (max-width: 860px) { .ldiag__in { grid-template-columns: minmax(0, 1fr); } }
+
+/* =============================================================== preuves = */
+
+/* Les avis : trois lignes numérotées, comme un registre noir sur blanc. */
+.lquotes { list-style: none; margin: clamp(2.5rem, 5vw, 3.5rem) 0 0; padding: 0; border-top: 1px solid var(--ink); }
+.lquote {
+  display: grid; grid-template-columns: 3rem minmax(0, 1fr) 16rem; gap: 1rem 2rem; align-items: baseline;
+  padding-block: 1.6rem; border-bottom: 1px solid var(--line);
+}
+.lquote__n { font-size: .875rem; color: var(--thread); }
+.lquote blockquote { margin: 0; font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.3; letter-spacing: -.02em; color: var(--ink); }
+.lquote__who { font-size: .875rem; color: var(--muted); }
+.lquote__who strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 760px) {
+  .lquote { grid-template-columns: 2rem minmax(0, 1fr); }
+  .lquote__who { grid-column: 2; }
+}
+
+/* ==================================================================== fin = */
+
+.lclose { padding-top: 0; }
+/* Le point d'arrivée du fil : un emplacement réservé à droite du titre. */
+.lclose__check { display: inline-block; width: 1.4em; height: .7em; vertical-align: .1em; margin-left: .15em; }
+
+@media (prefers-reduced-motion: reduce) { .lhero__h .ln > span, .lhero__code { animation: none; } }
+
+/* Points de passage du fil : des repères invisibles, placés dans les marges
+   pour que le fil contourne les titres au lieu de les barrer. */
+.lknot { position: absolute; width: 1px; height: 1px; pointer-events: none; }
+.lmethod__head, .lproof__head { position: relative; }
+.lproof__head { max-width: none; }
+/* Largeur utile du conteneur .wrap, pour viser son bord depuis un bloc centré. */
+.lmethod__head { --inner: calc(min(100vw, var(--w)) - 2 * var(--gut)); }
+.lknot--edge { right: calc((100% - var(--inner)) / 2); bottom: 0; }
+.lknot--below { left: 50%; bottom: calc(-1 * clamp(1.5rem, 3.5vw, 2.75rem)); }
+.lknot--right { right: 0; top: -2rem; }
+.ldiag__text { position: relative; }
+.lknot--bl { left: calc(-.6 * var(--gut)); bottom: calc(-.5 * var(--sec)); }
+.lmethod__more { position: relative; }
+.lknot--mid { left: 50%; top: -1.8rem; }
+.lknot--margin { left: calc(-.6 * var(--gut)); top: -1.4rem; }
+@media (max-width: 760px) { .lknot--mid { left: 1.6rem; } }

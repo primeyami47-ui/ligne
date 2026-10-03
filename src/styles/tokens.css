@@ -1,0 +1,247 @@
+/* ==========================================================================
+   IBRA — identité « Ligne »
+
+   Un fil rouge, au sens propre : celui du tailleur. Sur fond blanc, en
+   noir, une seule couleur, le rouge du fil. Il apparaît d'abord en pelote,
+   au milieu des noms de tissus, puis se démêle à mesure qu'on descend la
+   page, passe par chaque étape (mesures, tissu, essayages, livraison) et
+   finit en point de couture final à côté de « Passez à l'atelier ».
+
+   Typographie : une seule famille, Schibsted Grotesk (variable, 400 → 900).
+   Grands corps très serrés pour les titres, texte courant sobre, filets fins
+   à la place des cartes. Beaucoup de blanc.
+
+   Contrastes (WCAG) : encre sur blanc 19,3:1, texte 11,4:1, gris 5,9:1 ;
+   rouge sur blanc 4,9:1 (texte courant autorisé), blanc sur encre 19,3:1.
+   ========================================================================== */
+
+:root {
+  --thread: #E1262D;   /* le rouge du fil */
+  --thread-d: #B81C22;
+
+  /* Rôles partagés avec les composants : le site est monochrome, seul le
+     rouge colore. */
+  --cobalt:       #0D0D0F;
+  --cobalt-d:     #000000;
+  --cobalt-soft:  #F1F1F2;
+  --coral:        var(--thread);
+  --coral-soft:   #FDE8E8;
+  --saffron:      var(--thread);
+  --saffron-soft: #FDEDED;
+  --sky:          #E6E6E8;
+  --sky-soft:     #F5F5F6;
+  --pink:         #F1F1F2;
+  --pink-soft:    #F7F7F8;
+
+  --ink:    #0D0D0F;
+  --body:   #34343A;
+  --muted:  #66666E;
+  --white:  #FFFFFF;
+  --soft:   #F5F5F4;
+  --line:   #E4E4E6;
+  --line-2: #0D0D0F;
+
+  --blue:      var(--ink);
+  --blue-d:    #000;
+  --blue-soft: var(--cobalt-soft);
+  --red:       var(--thread);
+  --red-soft:  var(--coral-soft);
+  --surface:   #FFFFFF;
+  --on-blue:   #FFFFFF;
+
+  --display: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font:    var(--display);
+
+  --w:      1360px;
+  --w-text: 640px;
+  --gut:    clamp(1.25rem, 5vw, 4rem);
+  --sec:    clamp(5rem, 13vw, 11rem);
+
+  --r:    0px;
+  --r-lg: 0px;
+
+  --shadow:    none;
+  --shadow-lg: 0 30px 60px -30px rgba(0, 0, 0, .25);
+
+  --ease:   cubic-bezier(.2, .7, .3, 1);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--body);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:focus-visible { outline: 2px solid var(--thread); outline-offset: 3px; }
+[tabindex="-1"]:focus { outline: none; }
+a, button, .chip { text-decoration: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+::selection { background: var(--thread); color: #fff; }
+
+/* ------------------------------------------------------------ structure -- */
+
+.wrap { width: 100%; max-width: var(--w); margin-inline: auto; padding-inline: var(--gut); }
+.measure { max-width: var(--w-text); }
+.wrap-tight { width: 100%; max-width: calc(var(--w-text) + 2 * var(--gut)); margin-inline: auto; padding-inline: var(--gut); }
+.sec { padding-block: var(--sec); }
+.sec--soft { background: var(--soft); }
+
+.head { display: grid; gap: 1.3rem; max-width: 54rem; margin-bottom: clamp(3rem, 7vw, 5.5rem); }
+.head--center { margin-inline: auto; text-align: center; justify-items: center; }
+
+/* Sur-titre : un numéro de section et un court filet. */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .8rem; justify-self: start;
+  font-size: .8125rem; font-weight: 500; letter-spacing: 0;
+  color: var(--ink);
+}
+.eyebrow::before { content: ""; width: 2.2rem; height: 1.5px; background: var(--dot, var(--ink)); }
+
+.t-display { font-size: clamp(3.4rem, 11vw, 10rem); line-height: .88; letter-spacing: -.06em; font-weight: 600; }
+.t-h2      { font-size: clamp(2.6rem, 6.4vw, 5.8rem); line-height: .94; letter-spacing: -.055em; }
+.t-h3      { font-size: clamp(1.35rem, 2.1vw, 1.7rem); line-height: 1.12; letter-spacing: -.03em; font-weight: 600; }
+.t-lead    { font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.55; color: var(--body); letter-spacing: -.01em; }
+.t-small   { font-size: .9062rem; line-height: 1.55; color: var(--muted); }
+.t-num     { font-variant-numeric: tabular-nums; }
+.punct     { margin-left: 0; }
+.t-blue    { color: var(--ink); }
+.t-tag { font-size: .75rem; font-weight: 500; color: var(--muted); }
+.t-red     { color: var(--thread); }
+
+.mark { position: relative; white-space: nowrap; }
+.mark::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: .02em; height: .06em; min-height: 2px;
+  background: var(--mark, var(--thread));
+  transform-origin: left; transform: scaleX(var(--mark-x, 1));
+}
+
+/* ------------------------------------------------------------- boutons --- */
+/* Sans fond ni rondeur : un rectangle noir, une flèche, un fil rouge qui
+   se tend dessous au survol. */
+
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: 2.2rem;
+  font-family: var(--font); font-size: 1rem; font-weight: 500; letter-spacing: -.01em;
+  text-decoration: none;
+  padding: 1.1rem 1.3rem 1.1rem 1.4rem;
+  border: 0; border-radius: 0;
+  cursor: pointer;
+  transition: background-color .35s var(--ease), color .35s var(--ease);
+}
+.btn::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--thread); transform: scaleX(0); transform-origin: left;
+  transition: transform .5s var(--ease);
+}
+.btn:hover::after { transform: none; }
+.btn svg { transition: transform .35s var(--ease); }
+.btn:hover svg { transform: translateX(5px); }
+.btn:disabled { opacity: .6; cursor: default; }
+
+.btn--primary { background: var(--ink); color: #fff; }
+.btn--primary:hover { background: #222; }
+.btn--sun { background: var(--thread); color: #fff; }
+.btn--sun:hover { background: var(--thread-d); }
+.btn--sun::after { background: #fff; }
+.btn--quiet, .btn--light { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn--wa { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn--wa .wa { color: #1A8D48; }
+
+.link {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-weight: 500; font-size: 1rem;
+  color: var(--ink); text-decoration: none;
+  background: linear-gradient(var(--ink), var(--ink)) 0 100% / 100% 1.5px no-repeat;
+  padding-bottom: .2rem;
+  transition: background-size .4s var(--ease);
+}
+.link:hover { background-image: linear-gradient(var(--thread), var(--thread)); }
+button.link { border: 0; padding: 0 0 .2rem; font-family: inherit; cursor: pointer; background-color: transparent; }
+.link svg { transition: transform .3s var(--ease); }
+.link:hover svg { transform: translateX(3px); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--font); font-size: .9375rem; font-weight: 500;
+  padding: .7rem 1.1rem;
+  border: 0; border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  background: #fff; color: var(--ink);
+  cursor: pointer;
+  transition: box-shadow .2s var(--ease), background-color .2s var(--ease), color .2s;
+}
+.chip:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
+.chip:active { transform: scale(.97); }
+.chip.is-on { background: var(--ink); box-shadow: none; color: #fff; }
+
+/* Photographie : noir et blanc, contrasté. */
+.duo { position: relative; overflow: hidden; isolation: isolate; background: #111; }
+.duo img { filter: grayscale(1) contrast(1.12); }
+
+.tick { flex-shrink: 0; color: var(--thread); }
+.tick path { stroke-dasharray: 24; stroke-dashoffset: 0; }
+.in .tick path, .tick--draw path { animation: tick-draw .6s var(--ease) both; animation-delay: var(--d, 0ms); }
+@keyframes tick-draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+
+/* ------------------------------------------------ fin de page (partagée) - */
+
+.close {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem 3rem; align-items: end;
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1.5px solid var(--ink);
+}
+.close__who { display: none; }
+.close__text { display: grid; gap: 1rem; }
+.close__text .t-h2 { font-size: clamp(2.8rem, 7vw, 6.4rem); }
+.close__cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+@media (max-width: 760px) {
+  .close { grid-template-columns: minmax(0, 1fr); }
+  .close__cta .btn { flex: 1 1 auto; }
+}
+
+/* ------------------------------------------------------------- reveal ---- */
+
+.rv { opacity: 0; transform: translateY(20px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.rv.in { opacity: 1; transform: none; }
+
+/* ------------------------------------------------ transitions de page --- */
+/* Un trait rouge traverse l'écran, la page suivante apparaît derrière lui. */
+::view-transition-old(root) { animation: vt-out .35s var(--ease) both; }
+::view-transition-new(root) { animation: vt-in .6s var(--ease) both; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; transform: none; transition: none; }
+  .btn, .btn::after, .btn svg, .link, .link svg { transition: none; }
+  .in .tick path, .tick--draw path { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
